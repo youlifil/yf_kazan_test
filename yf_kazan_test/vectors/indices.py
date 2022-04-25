@@ -2,6 +2,7 @@ import torch
 from torch.nn.utils.rnn import pad_sequence
 from sklearn.preprocessing import LabelEncoder
 from collections import Counter
+import pandas as pd
 
 from yf_kazan_test.data import TheDatasets, Datapack
 
@@ -31,12 +32,13 @@ class Vocab:
                 idx += 1
 
 
-def to_indices(source, sentence_len=None, min_freq=1):
+def to_indices(src, sentence_len=None, min_freq=1):
     this = to_indices
 
     def fit_category_indexer():
-        this.category_indexer = LabelEncoder()
-        this.category_indexer.fit(TheDatasets.train["category_id"])
+        if not hasattr(this, "category_indexer"):
+            this.category_indexer = LabelEncoder()
+            this.category_indexer.fit(TheDatasets.train["category_id"])
 
     def build_vocab():
         tokens = [t for line in TheDatasets.train["about"] for t in line.split()]
@@ -58,12 +60,15 @@ def to_indices(source, sentence_len=None, min_freq=1):
     fit_category_indexer()
     build_vocab()
 
-    return Datapack(
-        X_train = texts_to_padded_tensor(source.X_train["about"]),
-        y_train = torch.tensor(this.category_indexer.transform(source.y_train)),
-        X_test = texts_to_padded_tensor(source.X_test["about"]),
-        y_test = torch.tensor(this.category_indexer.transform(source.y_test))
-    )
+    if type(src) is Datapack:
+        return Datapack(
+            X_train = texts_to_padded_tensor(src.X_train["about"]),
+            y_train = torch.tensor(this.category_indexer.transform(src.y_train)),
+            X_test = texts_to_padded_tensor(src.X_test["about"]),
+            y_test = torch.tensor(this.category_indexer.transform(src.y_test))
+        )
+    elif type(src) is pd.DataFrame:
+        return texts_to_padded_tensor(src["about"])
 
 def decode_category(index_cat):
     return to_indices.category_indexer.inverse_transform(index_cat)

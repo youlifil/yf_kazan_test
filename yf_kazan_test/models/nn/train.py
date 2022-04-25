@@ -104,3 +104,22 @@ def score_model(model, test_dl):
     true = decode_category(true.numpy())
     pred = decode_category(pred.numpy())
     print_score(true, pred)
+
+
+def model_inference(model, test_dl):
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    model.eval()
+    preds = []
+
+    with torch.no_grad():
+        for i, X in enumerate(test_dl):
+            pred = model(X[0].to(device)).cpu()
+            pred = pred.argmax(dim=1)
+            preds.append(pred)
+
+    pred = torch.cat(preds)
+    pred = decode_category(pred.numpy())
+
+    return pred
+

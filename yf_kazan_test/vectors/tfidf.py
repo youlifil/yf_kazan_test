@@ -1,20 +1,27 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
+import pandas as pd
 
 from yf_kazan_test.data.load import Datapack, TheDatasets
 
-def to_tfidf(source, min_freq=1):
+def to_tfidf(src, min_freq=1):
+    this = to_tfidf
+
     def fit_vectorizer():
-        to_tfidf.vectorizer = TfidfVectorizer(min_df=min_freq)
-        to_tfidf.vectorizer.fit(TheDatasets.train["about"])
+        if not hasattr(this, "vectorizer"):
+            this.vectorizer = TfidfVectorizer(min_df=min_freq)
+            this.vectorizer.fit(TheDatasets.train["about"])
 
     fit_vectorizer()
 
-    return Datapack(
-        X_train = to_tfidf.vectorizer.transform(source.X_train["about"]),
-        y_train = source.y_train.values,
-        X_test = to_tfidf.vectorizer.transform(source.X_test["about"]),
-        y_test = source.y_test.values
-    )
+    if type(src) is Datapack:
+        return Datapack(
+            X_train = this.vectorizer.transform(src.X_train["about"]),
+            y_train = src.y_train.values,
+            X_test = this.vectorizer.transform(src.X_test["about"]),
+            y_test = src.y_test.values
+        )
+    elif type(src) is pd.DataFrame:
+        return this.vectorizer.transform(src)
 
 
 def tfidf_vocab():

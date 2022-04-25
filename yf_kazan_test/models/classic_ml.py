@@ -1,6 +1,9 @@
+import datetime
+
 from yf_kazan_test.util import print_md, catch_time
 from yf_kazan_test.models import print_score
-import datetime
+from yf_kazan_test.vectors.tfidf import to_tfidf
+from yf_kazan_test.data import TheDatasets
 
 def run_classic_ml(classifier, datapack, title=None):
     if not title:
@@ -17,3 +20,4 @@ def run_classic_ml(classifier, datapack, title=None):
     print_score(datapack.y_train, pred_train)
     print_md("✅ **test**")
     print_score(datapack.y_test, pred_test)
+
