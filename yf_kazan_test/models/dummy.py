@@ -2,7 +2,7 @@ from collections import Counter
 
 from yf_kazan_test.category_tree import Category
 from yf_kazan_test.data import tokenizer
-from yf_kazan_test.score import print_score
+from yf_kazan_test.models.score import print_score
 
 def run_simple_matching(train):
     true, pred = [], []
