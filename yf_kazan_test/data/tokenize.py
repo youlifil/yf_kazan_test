@@ -21,4 +21,4 @@ def tokenizer(text):
             token = morph.normal_forms(token)[0]
             tokens.append(token)    
 
-    return ' '.join(tokens)
+    return tokens

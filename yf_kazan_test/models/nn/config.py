@@ -1,0 +1,2 @@
+PAD_IDX = 0
+MAX_EPOCHS = 20

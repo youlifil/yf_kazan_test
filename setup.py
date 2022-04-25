@@ -13,6 +13,7 @@ setup(
     keywords=[],
     entry_points={},
     install_requires=[
+        "pymorphy2"
     ],
     packages=find_packages(),
     license='')

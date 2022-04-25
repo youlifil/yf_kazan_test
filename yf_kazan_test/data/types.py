@@ -3,7 +3,6 @@ class TheDatasets:
     test = None
 
     @classmethod
-    @property
     def class_num(cls):
         return len(set(cls.train["category_id"]))
 

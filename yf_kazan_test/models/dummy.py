@@ -8,7 +8,7 @@ def run_simple_matching(train):
     true, pred = [], []
 
     DUMMY_CATEGORY = Counter(train["category_id"]).most_common()[0][0]
-    category_tokens = [(cat, set(tokenizer(' '.join(cat.path_name)).split())) for cat in map(Category, set(train["category_id"]))]
+    category_tokens = [(cat, set(tokenizer(' '.join(cat.path_name)))) for cat in map(Category, set(train["category_id"]))]
     data = zip(train["category_id"], train["about"])
 
     for cat_id, about in data:

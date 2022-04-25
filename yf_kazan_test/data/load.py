@@ -21,7 +21,14 @@ def download_preprocessed_train_dataset():
 
 
 def split_datasets(target_column):
-    _check_datasets()
+    def check_datasets():
+        if TheDatasets.train is None:
+            TheDatasets.train = pd.read_parquet("preprocessed_train.parquet")
+        if TheDatasets.test is None:
+            TheDatasets.test = pd.read_parquet("test.parquet")
+
+    check_datasets()
+
     data_columns = ["about", "rating", "feedback_quantity"]
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -32,12 +39,3 @@ def split_datasets(target_column):
         stratify=TheDatasets.train[target_column])
 
     return Datapack(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test)
-
-
-def _check_datasets():
-    if TheDatasets.train is None:
-        TheDatasets.train = pd.read_parquet("preprocessed_train.parquet")
-    if TheDatasets.test is None:
-        TheDatasets.test = pd.read_parquet("test.parquet")
-
-

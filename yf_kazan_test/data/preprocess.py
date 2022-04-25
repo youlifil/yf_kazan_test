@@ -15,7 +15,7 @@ def preprocess_dataset():
     train.drop(train[train["category_id"].isin(rares)].index, inplace=True)
 
     # создание колонки общего текстового описания, нормализованного
-    row_texter = lambda row: tokenizer(row["title"] + " " + row["short_description"] + " " + row["name_value_characteristics"])
+    row_texter = lambda row: ' '.join(tokenizer(row["title"] + " " + row["short_description"] + " " + row["name_value_characteristics"]))
     train["about"] = train.apply(row_texter, axis=1)
     token_count = sum(len(ab.split()) for ab in train["about"].values)
     print("train corpus total token count: {:,}".format(token_count))
