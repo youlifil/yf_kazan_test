@@ -10,6 +10,7 @@ import numpy as np
 def epoch_printer(epoch, train_loss, val_loss):
     print('\rEpoch {:02d}, Training Loss: {:.6f}, Validation Loss: {:.6f}'.format(epoch+1, train_loss, val_loss))
 
+
 def batch_printer(mode, epoch, batch_i, batch_total):
     print(f"\rEpoch {epoch+1:02d}: {mode} batch {batch_i:04d}/{batch_total:04d}", end="")
 

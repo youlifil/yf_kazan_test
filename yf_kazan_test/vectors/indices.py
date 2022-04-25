@@ -39,7 +39,7 @@ def to_indices(source, sentence_len=None, min_freq=1):
         this.category_indexer.fit(TheDatasets.train["category_id"])
 
     def build_vocab():
-        tokens = [t for line in TheDatasets.train["about"].values for t in line.split()]
+        tokens = [t for line in TheDatasets.train["about"] for t in line.split()]
         this.vocab = Vocab(tokens, min_freq=min_freq)
 
     def texts_to_padded_tensor(texts):
