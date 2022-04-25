@@ -1,15 +1,15 @@
 from collections import Counter
 
 from yf_kazan_test.category_tree import Category
-from yf_kazan_test.vectors import tokenizer
+from yf_kazan_test.data import tokenizer
 from yf_kazan_test.score import print_score
 
-def run_simple_matching(train_df):
+def run_simple_matching(train):
     true, pred = [], []
 
-    DUMMY_CATEGORY = Counter(train_df["category_id"]).most_common()[0][0]
-    category_tokens = [(cat, set(tokenizer(' '.join(cat.path_name)).split())) for cat in map(Category, set(train_df["category_id"]))]
-    data = zip(train_df["category_id"], train_df["about"])
+    DUMMY_CATEGORY = Counter(train["category_id"]).most_common()[0][0]
+    category_tokens = [(cat, set(tokenizer(' '.join(cat.path_name)).split())) for cat in map(Category, set(train["category_id"]))]
+    data = zip(train["category_id"], train["about"])
 
     for cat_id, about in data:
         name_tokens = set(about.split())
